@@ -1,5 +1,6 @@
 import App from "@/App.vue";
 import router from "@/router";
+import "@/router/router.guard";
 import Vue from "vue";
 import Notifications from "vue-notification";
 import store from "@/store";
