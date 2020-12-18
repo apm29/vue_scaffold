@@ -5,7 +5,6 @@ import remote from "@/utils/remote";
 import Notifications from "vue-notification";
 import messenger from "@/utils/messenger/messenger";
 import store from "@/store";
-import vuetify from "@/plugins/vuetify";
 import config from "@/utils/config";
 Vue.use(Notifications);
 Vue.config.productionTip = false;
@@ -21,6 +20,5 @@ Vue.prototype.$delay = function(delay) {
 new Vue({
   router,
   store,
-  vuetify,
   render: h => h(App)
 }).$mount("#app");

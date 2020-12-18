@@ -39,14 +39,12 @@ module.exports = {
             })
           ],
     externals: {
-      moment: "moment",
-      vue: "Vue",
-      vuetify: "Vuetify"
+      vue: "Vue"
     },
     context: path.resolve(__dirname, "./"),
     //别名配置
     resolve: {
-      extensions: [",js", ".vue"],
+      extensions: [".js", ".vue"],
       alias: {
         "@": path.resolve("src")
       }
