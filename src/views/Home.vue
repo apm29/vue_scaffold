@@ -10,6 +10,7 @@
 
 <script>
 import { START_LOADING, STOP_LOADING } from "@/store/mutationTypes";
+
 export default {
   name: "Home",
   methods: {
@@ -20,8 +21,10 @@ export default {
     },
     notificationMock() {
       this.$notify({
-        text: "Hello From Vue",
-        title: "title From Vue"
+        text: "text From Vue",
+        title: "title From Vue",
+        type: "error",
+        duration: 20000
       });
     }
   }

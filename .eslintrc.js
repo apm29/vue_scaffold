@@ -26,7 +26,7 @@ module.exports = {
     "vue/no-use-v-if-with-v-for": "warn",
     "vue/require-component-is": "warn",
     "vue/require-prop-type-constructor": "warn",
-    "vue/require-render-return": "warn",
+    "vue/require-render-return": "off",
     "vue/require-v-for-key": "warn",
     "vue/require-valid-default-prop": "warn",
     "vue/return-in-computed-property": "warn",
