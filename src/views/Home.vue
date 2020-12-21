@@ -10,21 +10,26 @@
 
 <script>
 import { START_LOADING, STOP_LOADING } from "@/store/mutationTypes";
+import { mapMutations } from "vuex";
 
 export default {
   name: "Home",
   methods: {
+    ...mapMutations({
+      START_LOADING,
+      STOP_LOADING
+    }),
     async requestMock() {
-      this.$store.commit(START_LOADING);
+      this.START_LOADING();
       await this.$delay(2000);
-      this.$store.commit(STOP_LOADING);
+      this.STOP_LOADING();
     },
     notificationMock() {
       this.$notify({
         text: "text From Vue",
         title: "title From Vue",
-        type: "error",
-        duration: 20000
+        type: "warning",
+        duration: 6222222
       });
     }
   }

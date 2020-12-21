@@ -1,15 +1,25 @@
-import config from "@/utils/activity/config";
-export const TOKEN_KEY = config.tokenKey;
-export const USER_INFO_KEY = config.userInfoKey;
+import config from "@/config/storage.config";
+let TOKEN_KEY = config.tokenKey;
+let USER_INFO_KEY = config.userInfoKey;
 
-function set(key, token) {
+/**
+ * 私有方法,设置localStorage数据
+ * @param key
+ * @param token
+ */
+function setLocalStorage(key, token) {
   if (token) {
     localStorage.setItem(key, token);
   } else {
     localStorage.removeItem(key);
   }
 }
-function get(key) {
+
+/**
+ * 私有方法,获取localStorage数据
+ * @param key
+ */
+function getLocalStorage(key) {
   const token = localStorage.getItem(key);
   if (token && token !== "null" && token !== "undefined") {
     return token;
@@ -18,20 +28,24 @@ function get(key) {
   }
 }
 
+/*
+ * 暴露的公共方法,作为设置到浏览器本地的数据公共入口,方便统一修改
+ */
+
 export const setToken = token => {
-  set(TOKEN_KEY, token);
+  setLocalStorage(TOKEN_KEY, token);
 };
 
 export const getToken = () => {
-  return get(TOKEN_KEY);
+  return getLocalStorage(TOKEN_KEY);
 };
 
 export const setUserInfo = user => {
-  set(USER_INFO_KEY, JSON.stringify(user));
+  setLocalStorage(USER_INFO_KEY, JSON.stringify(user));
 };
 
 export const getUserInfo = () => {
-  const userString = get(USER_INFO_KEY);
+  const userString = getLocalStorage(USER_INFO_KEY);
   if (userString) {
     try {
       return JSON.parse(userString);

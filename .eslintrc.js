@@ -12,6 +12,7 @@ module.exports = {
   rules: {
     "no-console": "off",
     "no-debugger": "off",
+    "no-irregular-whitespace": "off",
     "vue/no-async-in-computed-properties": "warn",
     "vue/no-dupe-keys": "warn",
     "vue/no-duplicate-attributes": "warn",
@@ -22,7 +23,7 @@ module.exports = {
     "vue/no-template-key": "warn",
     "vue/no-textarea-mustache": "warn",
     "vue/no-unused-components": "warn",
-    "vue/no-unused-vars": "warn",
+    "vue/no-unused-vars": "off",
     "vue/no-use-v-if-with-v-for": "warn",
     "vue/require-component-is": "warn",
     "vue/require-prop-type-constructor": "warn",

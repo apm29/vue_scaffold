@@ -1,6 +1,7 @@
 <template>
   <div>
     <router-view></router-view>
+    <!--公共加载中组件-->
     <div
       v-if="loading"
       class="loading-container"
@@ -8,22 +9,29 @@
     >
       <loading></loading>
     </div>
-    <notifications width="100%">
+    <!--公共通知组件-->
+    <notifications
+      width="100%"
+      animation-type="velocity"
+      :animation="animation"
+    >
       <template slot="body" slot-scope="props">
-        <div
-          @click="props.close"
-          :class="['notification-container', `${props.item.type}`]"
-        >
-          <div class="notification-prefix"></div>
-          <div style="padding: 8px 10px;">
-            <div style="width: 100%;font-size: 20px">
-              {{ props.item.title }}
-            </div>
-            <div style="width: 100%;text-overflow: ellipsis">
-              {{ props.item.text }}
+        <slide-widget @end="props.close()">
+          <div
+            @click="props.close"
+            :class="['notification-container', `${props.item.type}`]"
+          >
+            <div class="notification-prefix"></div>
+            <div style="padding: 8px 10px;">
+              <div class="notification-title">
+                {{ props.item.title }}
+              </div>
+              <div class="notification-text">
+                {{ props.item.text }}
+              </div>
             </div>
           </div>
-        </div>
+        </slide-widget>
       </template>
     </notifications>
   </div>
@@ -31,17 +39,37 @@
 <script>
 import Loading from "@/components/loading/Loading";
 import StateMixin from "@/mixins/StateMixin.vue";
+import SlideWidget from "@/components/gesture/SlideWidget";
 
 export default {
   name: "App",
-  components: { Loading },
+  components: { SlideWidget, Loading },
   mixins: [StateMixin],
+  data() {
+    return {
+      animation: {
+        enter(element) {
+          let height = element.clientHeight;
+          return {
+            marginTop: [0, -height]
+          };
+        },
+        leave: {
+          height: 0,
+          opacity: 0
+        }
+      }
+    };
+  },
   methods: {
     onLoadingContentClick() {}
   }
 };
 </script>
 <style scoped lang="scss">
+@import "./style/common.scss";
+@import "./style/mixin.scss";
+
 .loading-container {
   position: fixed;
   width: 100%;
@@ -52,15 +80,6 @@ export default {
   bottom: 0;
   background-color: rgba(255, 255, 255, 0.7);
 }
-
-$success: #3f8c42;
-$success-lighten: #78bd7a;
-$info: #2491ea;
-$info-lighten: #5dacee;
-$warning: #f18809;
-$warning-lighten: #f3a554;
-$error: #f65152;
-$error-lighten: #f67b7c;
 
 .error {
   background-color: $error;
@@ -95,16 +114,27 @@ $error-lighten: #f67b7c;
 }
 
 .notification-container {
-  color: white;
-  border-radius: 10px;
-  margin: 4px 6px;
+  border-radius: 8px;
+  margin: 8px 8px;
   clip: auto;
   display: flex;
   flex-direction: row;
+  box-shadow: #555555 2px 2px 8px;
 
   .notification-prefix {
     width: 10px;
     border-radius: 10px 0 0 10px;
+  }
+
+  .notification-title {
+    color: white;
+    width: 100%;
+    font-size: 20px;
+  }
+
+  .notification-text {
+    color: white;
+    width: 100%;
   }
 }
 </style>
