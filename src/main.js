@@ -6,7 +6,7 @@ import Notifications from "vue-notification";
 import velocity from "velocity-animate";
 import store from "@/store";
 import remote from "@/utils/remote";
-
+import _ from "lodash";
 Vue.use(Notifications, { velocity });
 Vue.config.productionTip = false;
 //公共延迟方法
@@ -33,6 +33,7 @@ Vue.prototype.$notification = config => {
   }
 };
 Vue.prototype.$remote = remote;
+Vue.prototype.$debounce = _.debounce;
 new Vue({
   router,
   store,

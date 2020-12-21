@@ -125,14 +125,21 @@ export default {
         return new Promise((resolve, reject) => {
           if (axiosResponse.status === 200) {
             //在此处进行响应拦截
-            resolve(axiosResponse);
+            if (this.axiosResponseProcessor(axiosResponse)) {
+              resolve(axiosResponse);
+            } else {
+              notifyUserWithAlert(
+                this.axiosResponseErrorMessageCreator(axiosResponse)
+              );
+              reject(axiosResponse);
+            }
           } else {
             notifyUserWithAlert(
               `ERROR:${axiosResponse.status} ${JSON.stringify(
                 axiosResponse.statusText
               )}`
             );
-            reject(axiosResponse.statusText);
+            reject(axiosResponse);
           }
         });
       },
@@ -143,5 +150,23 @@ export default {
         return Promise.reject(error);
       }
     );
+  },
+
+  /**
+   * 决定axiosResponse是否是有效的返回值
+   * @param axiosResponse
+   * @returns {boolean}
+   */
+  axiosResponseProcessor: function(axiosResponse) {
+    return axiosResponse.data.status.toString() === "1";
+  },
+
+  /**
+   * 当axiosResponse判定为无效时,创建errorMessage
+   * @param axiosResponse
+   * @returns {string}
+   */
+  axiosResponseErrorMessageCreator: function(axiosResponse) {
+    return axiosResponse.data.text || "无效的返回值";
   }
 };

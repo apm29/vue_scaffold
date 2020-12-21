@@ -2,7 +2,8 @@
   <div>
     <section class="home">Hello World</section>
     <section>
-      <button @click="requestMock()">测试请求</button>
+      <button @click="requestMock">测试请求</button>
+      <button @click="requestMockDebounce">测试debounce请求</button>
       <button @click="notificationMockTop()">测试顶部通知</button>
       <button @click="notificationMockBottom()">测试底部通知</button>
     </section>
@@ -12,6 +13,7 @@
 <script>
 import { START_LOADING, STOP_LOADING } from "@/store/mutationTypes";
 import { mapMutations } from "vuex";
+import { debounce } from "lodash";
 
 export default {
   name: "Home",
@@ -20,12 +22,23 @@ export default {
       START_LOADING,
       STOP_LOADING
     }),
+    requestMockDebounce: debounce(
+      async function() {
+        let res = await this.$remote.post({
+          url: "/test/network",
+          silent: true
+        });
+        this.$notification(JSON.stringify(res));
+      },
+      500,
+      {
+        leading: true,
+        trailing: false
+      }
+    ),
     async requestMock() {
-      // this.START_LOADING();
-      // await this.$delay(2000);
-      // this.STOP_LOADING();
       let res = await this.$remote.post({
-        url: "/asdasd/asd"
+        url: "/test/network"
       });
       this.$notification(JSON.stringify(res));
     },
