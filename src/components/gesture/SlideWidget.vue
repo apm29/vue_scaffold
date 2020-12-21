@@ -13,6 +13,15 @@
 <script>
 export default {
   name: "SlideWidget",
+  props: {
+    orientation: {
+      type: String,
+      default: "up",
+      validator: function(value) {
+        return ["up", "down"].indexOf(value) !== -1;
+      }
+    }
+  },
   data() {
     return {
       startY: 0, //触摸位置
@@ -37,23 +46,38 @@ export default {
       if (ev.touches.length === 1) {
         this.moveY = ev.touches[0].clientY;
         this.distanceY = this.startY - this.moveY;
-        if (this.distanceY <= 0) {
-          this.slideY = 0;
-        } else if (this.distanceY > 0) {
-          if (this.distanceY >= contentHeight) {
-            this.slideY = contentHeight;
-          } else {
-            this.slideY = this.distanceY;
+        if (this.orientation === "up") {
+          if (this.distanceY <= 0) {
+            this.slideY = 0;
+          } else if (this.distanceY > 0) {
+            if (this.distanceY >= contentHeight) {
+              this.slideY = contentHeight;
+            } else {
+              this.slideY = this.distanceY;
+            }
+          }
+        } else {
+          if (this.distanceY >= 0) {
+            this.slideY = 0;
+          } else if (this.distanceY < 0) {
+            if (this.distanceY >= contentHeight) {
+              this.slideY = contentHeight;
+            } else {
+              this.slideY = this.distanceY;
+            }
           }
         }
       }
     },
     touchEnd(ev) {
+      if (!this.$refs.content) {
+        return;
+      }
       let contentHeight = this.$refs.content.offsetHeight;
       if (ev.changedTouches.length === 1) {
         let endY = ev.changedTouches[0].clientY;
         this.distanceY = this.startY - endY;
-        if (this.distanceY < contentHeight / 2) {
+        if (Math.abs(this.distanceY) < contentHeight / 2) {
           this.slideY = 0;
         } else {
           this.slideY = contentHeight;

@@ -1,13 +1,15 @@
 import axios from "axios";
 import qs from "qs";
 import store from "@/store";
-import config from "@/utils/config";
+import config from "@/config/network.config";
 import { START_LOADING, STOP_LOADING } from "@/store/mutationTypes";
+import Vue from "vue";
 
+let vm = new Vue();
 axios.defaults.withCredentials = true; // 是否允许跨域
 axios.defaults.timeout = 10000;
 axios.defaults.baseURL = config.baseUrl;
-axios.defaults.validateStatus = () => true;
+// axios.defaults.validateStatus = () => true;
 //默认options
 const DEFAULT_OPTION = {
   responseType: "json", //类型
@@ -26,9 +28,25 @@ const DEFAULT_OPTION = {
   ]
 };
 
+function notifyUserWithAlert(message, title = "网络请求失败") {
+  if (vm.$notification) {
+    vm.$notification({
+      title: title,
+      text: message,
+      type: "error"
+    });
+  } else {
+    window.alert(message);
+  }
+}
+
+/**
+ * 请求工具类,post/get/upload
+ * resumeOnError为false时,失败将会抛出异常
+ * silent: false时会向store提交loading,App.vue会显示Loading界面
+ */
 export default {
-  //post请求,resumeOnError为false时,失败将会抛出异常
-  post: async option => {
+  post: async function(option) {
     const postOptions = {
       method: "POST",
       header: {
@@ -39,7 +57,7 @@ export default {
     return await this.request(option);
   },
 
-  upload: async options => {
+  upload: async function(option) {
     const uploadOptions = {
       method: "POST",
       handleApp: false,
@@ -48,11 +66,11 @@ export default {
         "Content-Type": "multipart/form-data"
       }
     };
-    options = Object.assign({}, DEFAULT_OPTION, uploadOptions, options);
-    return await this.request(options);
+    option = Object.assign({}, DEFAULT_OPTION, uploadOptions, option);
+    return await this.request(option);
   },
 
-  get: async option => {
+  get: async function(option) {
     const getOptions = {
       method: "GET",
       header: {
@@ -63,14 +81,14 @@ export default {
     return await this.request(option);
   },
 
-  request: async option => {
+  request: async function(option) {
     const axiosInstance = axios.create();
     this.interceptors(axiosInstance, option);
     try {
       if (!option.silent) {
         store.commit(START_LOADING);
       }
-      const res = await axiosInstance.request({
+      return await axiosInstance.request({
         url: option.url,
         data: option.data,
         method: option.method,
@@ -78,7 +96,6 @@ export default {
         responseType: option.responseType,
         headers: option.header
       });
-      return res;
     } catch (err) {
       if (!option.resumeOnError) {
         throw err;
@@ -98,18 +115,31 @@ export default {
         return config;
       },
       error => {
+        console.log(error);
         return Promise.reject(error);
       }
     );
     // 响应拦截
     instance.interceptors.response.use(
       async axiosResponse => {
-        return new Promise(resolve => {
-          //在此处进行响应拦截
-          resolve(axiosResponse);
+        return new Promise((resolve, reject) => {
+          if (axiosResponse.status === 200) {
+            //在此处进行响应拦截
+            resolve(axiosResponse);
+          } else {
+            notifyUserWithAlert(
+              `ERROR:${axiosResponse.status} ${JSON.stringify(
+                axiosResponse.statusText
+              )}`
+            );
+            reject(axiosResponse.statusText);
+          }
         });
       },
       error => {
+        notifyUserWithAlert(
+          `REJECT: ${error.message || JSON.stringify(error)}`
+        );
         return Promise.reject(error);
       }
     );

@@ -14,6 +14,8 @@
       width="100%"
       animation-type="velocity"
       :animation="animation"
+      position="top right"
+      group="top"
     >
       <template slot="body" slot-scope="props">
         <slide-widget @end="props.close()">
@@ -27,7 +29,34 @@
                 {{ props.item.title }}
               </div>
               <div class="notification-text">
-                {{ props.item.text }}
+                {{ props.item.text }}{{ props.item.group }}
+              </div>
+            </div>
+          </div>
+        </slide-widget>
+      </template>
+    </notifications>
+    <!--公共通知组件-->
+    <notifications
+      width="100%"
+      animation-type="velocity"
+      :animation="animation"
+      position="bottom right"
+      group="bottom"
+    >
+      <template slot="body" slot-scope="props">
+        <slide-widget orientation="down" @end="props.close()">
+          <div
+            @click="props.close"
+            :class="['notification-container', `${props.item.type}`]"
+          >
+            <div class="notification-prefix"></div>
+            <div style="padding: 8px 10px;">
+              <div class="notification-title">
+                {{ props.item.title }}
+              </div>
+              <div class="notification-text">
+                {{ props.item.text }}{{ props.item.group }}
               </div>
             </div>
           </div>
@@ -135,6 +164,7 @@ export default {
   .notification-text {
     color: white;
     width: 100%;
+    word-break: break-all;
   }
 }
 </style>

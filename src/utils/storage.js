@@ -1,4 +1,5 @@
 import config from "@/config/storage.config";
+
 let TOKEN_KEY = config.tokenKey;
 let USER_INFO_KEY = config.userInfoKey;
 
@@ -21,6 +22,32 @@ function setLocalStorage(key, token) {
  */
 function getLocalStorage(key) {
   const token = localStorage.getItem(key);
+  if (token && token !== "null" && token !== "undefined") {
+    return token;
+  } else {
+    return undefined;
+  }
+}
+
+/**
+ * 私有方法,设置localStorage数据
+ * @param key
+ * @param token
+ */
+function setSessionStorage(key, token) {
+  if (token) {
+    sessionStorage.setItem(key, token);
+  } else {
+    sessionStorage.removeItem(key);
+  }
+}
+
+/**
+ * 私有方法,获取localStorage数据
+ * @param key
+ */
+function getSessionStorage(key) {
+  const token = sessionStorage.getItem(key);
   if (token && token !== "null" && token !== "undefined") {
     return token;
   } else {
@@ -57,3 +84,10 @@ export const getUserInfo = () => {
     return undefined;
   }
 };
+
+/**
+ * 测试用
+ * @param count
+ */
+export const setAuthCount = count => setSessionStorage("wx-auth-count", count);
+export const getAuthCount = count => getSessionStorage("wx-auth-count", count);

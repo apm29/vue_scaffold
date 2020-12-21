@@ -5,12 +5,34 @@ import Vue from "vue";
 import Notifications from "vue-notification";
 import velocity from "velocity-animate";
 import store from "@/store";
+import remote from "@/utils/remote";
 
 Vue.use(Notifications, { velocity });
 Vue.config.productionTip = false;
 //公共延迟方法
 Vue.prototype.$delay = timeInMilliSeconds =>
   new Promise(resolve => setTimeout(resolve, timeInMilliSeconds));
+Vue.prototype.$notification = config => {
+  if (config instanceof Object) {
+    let newConfig = Object.assign(
+      {
+        group: "top",
+        type: "info"
+      },
+      config
+    );
+    Vue.prototype.$notify(newConfig);
+  } else {
+    let newConfig = {
+      group: "top",
+      type: "info",
+      title: "通知",
+      text: config
+    };
+    Vue.prototype.$notify(newConfig);
+  }
+};
+Vue.prototype.$remote = remote;
 new Vue({
   router,
   store,
