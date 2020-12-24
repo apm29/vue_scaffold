@@ -14,8 +14,8 @@ module.exports = {
     open: process.platform === "darwin",
     host: "0.0.0.0",
     https: false,
-    hotOnly: false,
-    proxy: "http://localhost:8888" // string | Object
+    hotOnly: false
+    // proxy: "http://localhost:8888" // string | Object
   },
   configureWebpack: {
     name: "e-road",
@@ -40,7 +40,7 @@ module.exports = {
     resolve: {
       extensions: [".js", ".vue"],
       alias: {
-        "@": path.resolve("src")
+        "@": path.resolve(__dirname, "src")
       }
     }
   }

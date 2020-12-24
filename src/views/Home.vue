@@ -56,7 +56,8 @@ export default {
         text: "text From Vue",
         title: "title From Vue",
         type: "warning",
-        group: "bottom"
+        group: "bottom",
+        duration: 6222
       });
     }
   }
