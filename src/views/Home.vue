@@ -28,6 +28,7 @@ export default {
           url: "/test/network",
           silent: true
         });
+        console.log(res);
         this.$notification(JSON.stringify(res));
       },
       500,

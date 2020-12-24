@@ -21,6 +21,7 @@ const DEFAULT_OPTION = {
   },
   silent: false, //不显示loading
   resumeOnError: false, //false时失败直接抛出异常
+  returnInvalidResponse: false, //是否返回拦截的请求结果
   transformRequest: [
     data => {
       return qs.stringify(data);
@@ -88,7 +89,7 @@ export default {
       if (!option.silent) {
         store.commit(START_LOADING);
       }
-      return await axiosInstance.request({
+      let axiosResponse = await axiosInstance.request({
         url: option.url,
         data: option.data,
         method: option.method,
@@ -96,6 +97,7 @@ export default {
         responseType: option.responseType,
         headers: option.header
       });
+      return axiosResponse.data;
     } catch (err) {
       if (!option.resumeOnError) {
         throw err;
@@ -107,7 +109,7 @@ export default {
     }
   },
 
-  interceptors(instance) {
+  interceptors(instance, option) {
     // 请求拦截
     instance.interceptors.request.use(
       config => {
@@ -131,7 +133,11 @@ export default {
               notifyUserWithAlert(
                 this.axiosResponseErrorMessageCreator(axiosResponse)
               );
-              reject(axiosResponse);
+              if (option.returnInvalidResponse) {
+                resolve(axiosResponse);
+              } else {
+                reject(axiosResponse);
+              }
             }
           } else {
             notifyUserWithAlert(
