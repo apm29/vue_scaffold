@@ -36,7 +36,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/mixin";
+@import "~@/style/mixin.scss";
 
 @keyframes load {
   0% {
