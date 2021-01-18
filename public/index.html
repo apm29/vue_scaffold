@@ -4,15 +4,75 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <link rel="icon" href="<%= BASE_URL %>logo.png">
     <title><%= htmlWebpackPlugin.options.title %></title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
+<!--    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">-->
+<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">-->
+    <style>
+        body,html{
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .loader {
+            position: relative;
+            top: 40%;
+        }
+
+        .outer,
+        .middle,
+        .inner {
+            border: 3px solid transparent;
+            border-top-color: #6a2696;
+            border-right-color: #8f288a;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+        }
+
+        .outer {
+            width: 3.5em;
+            height: 3.5em;
+            margin-left: -1.75em;
+            margin-top: -1.75em;
+            animation: spin 2s linear infinite;
+        }
+
+        .middle {
+            width: 2.1em;
+            height: 2.1em;
+            margin-left: -1.05em;
+            margin-top: -1.05em;
+            animation: spin 1.75s linear reverse infinite;
+        }
+
+        .inner {
+            width: 0.8em;
+            height: 0.8em;
+            margin-left: -0.4em;
+            margin-top: -0.4em;
+            animation: spin 1.5s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        #loading-view{
+            transition: all 0.8s linear;
+        }
+    </style>
 </head>
 <body>
 <div id="loading-view" style="width: 100%;height: 100%;">
-    <i class="mdi mdi-spin mdi-gamepad-circle-down" style="position: absolute;left: 50%;top:50%; -webkit-transform: translateY(-50%)  translateX(-50%);
-            transform: translateY(-50%)  translateX(-50%); color:blueviolet;font-size: 96px"></i>
+  <div class="loader">
+    <div class="outer"></div>
+    <div class="middle"></div>
+    <div class="inner"></div>
+  </div>
 </div>
 <noscript>
     <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
@@ -24,7 +84,12 @@
 <script>
   let elementById = document.getElementById('loading-view')
   if (elementById) {
-    elementById.remove()
+    setTimeout(()=>{
+      elementById.style.opacity = '0'
+    },400)
+    setTimeout(()=>{
+      elementById.remove()
+    },1200)
   }
 </script>
 </body>
