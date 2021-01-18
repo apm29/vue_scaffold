@@ -1,4 +1,4 @@
-# vue_scaffold
+# vue-scaffold
 
 ## Project setup
 
