@@ -61,7 +61,6 @@ export default {
   upload: async function(option) {
     const uploadOptions = {
       method: "POST",
-      handleApp: false,
       transformRequest: [],
       header: {
         "Content-Type": "multipart/form-data"

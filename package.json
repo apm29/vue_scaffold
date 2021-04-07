@@ -12,6 +12,7 @@
     "core-js": "^3.8.1",
     "dayjs": "^1.9.7",
     "lodash": "^4.17.20",
+    "mescroll.js": "^1.4.2",
     "nprogress": "^0.2.0",
     "qs": "^6.9.0",
     "velocity-animate": "^1.5.2",
