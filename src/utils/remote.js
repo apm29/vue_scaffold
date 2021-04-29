@@ -16,7 +16,7 @@ const DEFAULT_OPTION = {
   url: "/", //url
   data: {}, //请求参数在此
   method: "POST",
-  header: {
+  headers: {
     "Content-Type": "application/x-www-form-urlencoded"
   },
   silent: false, //不显示loading
@@ -50,7 +50,7 @@ export default {
   post: async function(option) {
     const postOptions = {
       method: "POST",
-      header: {
+      headers: {
         "Content-Type": "application/x-www-form-urlencoded"
       }
     };
@@ -62,7 +62,7 @@ export default {
     const uploadOptions = {
       method: "POST",
       transformRequest: [],
-      header: {
+      headers: {
         "Content-Type": "multipart/form-data"
       }
     };
@@ -73,9 +73,10 @@ export default {
   get: async function(option) {
     const getOptions = {
       method: "GET",
-      header: {
+      headers: {
         "Content-Type": "application/x-www-form-urlencoded"
-      }
+      },
+      timeout: 60_000
     };
     option = Object.assign({}, DEFAULT_OPTION, getOptions, option);
     return await this.request(option);
@@ -89,12 +90,7 @@ export default {
         store.commit(START_LOADING);
       }
       let axiosResponse = await axiosInstance.request({
-        url: option.url,
-        data: option.data,
-        method: option.method,
-        transformRequest: option.transformRequest,
-        responseType: option.responseType,
-        headers: option.header
+        ...option
       });
       return axiosResponse.data;
     } catch (err) {

@@ -1,10 +1,11 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import updateLocale from "dayjs/plugin/updateLocale";
+import isBetween from "dayjs/plugin/isBetween";
 
 dayjs.extend(relativeTime);
 dayjs.extend(updateLocale);
-
+dayjs.extend(isBetween);
 dayjs.updateLocale("en", {
   relativeTime: {
     future: "%s后",
@@ -40,4 +41,22 @@ export function formattedRecentTime(timeStr) {
   } else {
     return date.format("YYYY.MM.DD");
   }
+}
+
+export function isTimeBetween(time, start, end) {
+  let now = dayjs(time);
+  let startTime = dayjs(start);
+  let endTime = dayjs(end);
+  return now.isBetween(startTime, endTime);
+}
+export function isTimeAfter(time, end) {
+  let now = dayjs(time);
+  let endTime = dayjs(end);
+  return now.isAfter(endTime);
+}
+
+export function isTimeBefore(time, end) {
+  let now = dayjs(time);
+  let endTime = dayjs(end);
+  return now.isBefore(endTime);
 }
