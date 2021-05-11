@@ -11,7 +11,7 @@
     "axios": "^0.21.1",
     "core-js": "^3.8.1",
     "dayjs": "^1.9.7",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "nprogress": "^0.2.0",
     "qs": "^6.9.0",
     "velocity-animate": "^1.5.2",
